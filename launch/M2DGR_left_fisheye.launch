@@ -1,0 +1,17 @@
+<launch>
+    <!-- Lidar odometry param -->
+    <rosparam file="$(find lvi_sam)/config/M2DGR_lidar.yaml" command="load" />
+    <!-- VINS config: M2DGR Cam-left fisheye -->
+    <param name="vins_config_file" type="string" value="$(find lvi_sam)/config/M2DGR_left_fisheye_camera.yaml" />
+
+    <node pkg="image_transport" type="republish" name="republish_m2dgr_left_fisheye"
+          args="compressed in:=/camera/left/image_raw raw out:=/camera/left/image_raw"
+          output="screen" respawn="true" />
+
+    <!-- Robot State TF -->
+    <include file="$(find lvi_sam)/launch/include/module_robot_state_publisher.launch" />
+    <!-- Run Rviz -->
+    <include file="$(find lvi_sam)/launch/include/module_rviz.launch" />
+    <!-- SAM -->
+    <include file="$(find lvi_sam)/launch/include/module_sam.launch" />
+</launch>
